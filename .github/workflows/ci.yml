@@ -14,12 +14,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          
+
       - run: flutter pub get
-        working-directory: ./Lab_A_7/bottom_navigator_bar_lab
+        working-directory: ./Lab_7B/data_table_lab
 
       - run: dart format --output=none --set-exit-if-changed .
-        working-directory: ./Lab_A_7/bottom_navigator_bar_lab
+        working-directory: ./Lab_7B/data_table_lab
 
       - run: flutter analyze
-        working-directory: ./Lab_A_7/bottom_navigator_bar_lab
+        working-directory: ./Lab_7B/data_table_lab
