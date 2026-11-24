@@ -45,7 +45,10 @@ class MyAppState extends State<MyApp> {
           iconSize: 30.0,
           currentIndex: _currentIndex,
           items: [
-            const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.access_alarm),
               label: 'Alarm',
@@ -54,7 +57,10 @@ class MyAppState extends State<MyApp> {
               icon: Icon(Icons.business),
               label: 'Business',
             ),
-            const BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'School',
+            ),
           ],
           onTap: (index) {
             setState(() {
