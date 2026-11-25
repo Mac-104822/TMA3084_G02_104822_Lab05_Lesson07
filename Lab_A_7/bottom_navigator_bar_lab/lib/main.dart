@@ -3,47 +3,70 @@ import 'package:bottom_navigator_bar_lab/screen2.dart';
 import 'package:bottom_navigator_bar_lab/screen3.dart';
 import 'package:bottom_navigator_bar_lab/screen4.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class BottomNavigationModel extends ChangeNotifier {
+  int _currentIndex = 0;
+
+  int get currentIndex => _currentIndex;
+
+  void setIndex(int index) {
+    if (index == _currentIndex) return;
+    _currentIndex = index;
+    notifyListeners();
+  }
+}
+
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  MyAppState createState() => MyAppState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => BottomNavigationModel(),
+      child: const MaterialApp(home: HomePage()),
+    );
+  }
 }
 
-class MyAppState extends State<MyApp> {
-  final tabs = [
-    const Center(child: Screen1()),
-    const Center(child: Screen2()),
-    const Center(child: Screen3()),
-    const Center(child: Screen4()),
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  static const tabs = [
+    Center(child: Screen1()),
+    Center(child: Screen2()),
+    Center(child: Screen3()),
+    Center(child: Screen4()),
   ];
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Text(
-            'Bottom Navigation Bar',
-            style: TextStyle(fontSize: 26, color: Colors.white),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: const Text(
+          'Bottom Navigation Bar',
+          style: TextStyle(fontSize: 26, color: Colors.white),
         ),
-        body: tabs[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
+      ),
+      body: Selector<BottomNavigationModel, int>(
+        selector: (_, model) => model.currentIndex,
+        builder: (_, currentIndex, _) => tabs[currentIndex],
+      ),
+      bottomNavigationBar: Selector<BottomNavigationModel, int>(
+        selector: (_, model) => model.currentIndex,
+        builder: (_, currentIndex, _) => BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.blue,
           selectedItemColor: Colors.white,
           selectedFontSize: 19.0,
           unselectedFontSize: 14.0,
           iconSize: 30.0,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           items: [
             const BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -62,11 +85,8 @@ class MyAppState extends State<MyApp> {
               label: 'School',
             ),
           ],
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+          onTap: (index) =>
+              context.read<BottomNavigationModel>().setIndex(index),
         ),
       ),
     );
